@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->integer('stock');
             $table->decimal('precio', 8, 2);
-            $table->string('imagen');
+            $table->string('imagen');//link
 
             //clave foranea
             $table->bigInteger('categoria_id')->unsigned();

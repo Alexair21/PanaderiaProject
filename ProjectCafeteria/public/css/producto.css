@@ -1,0 +1,21 @@
+.descripcion {
+    background-color: #00362f; /* Color verde */
+    color: #b3c3c1; /* Letras blancas */
+    padding: 1rem; /* Espaciado interno */
+    border-radius: 0.25rem; /* Bordes redondeados */
+    margin-top: 1rem; /* Margen superior */
+    text-align: center;
+}
+
+p{
+    color: #b3c3c1; /* Letras blancas */
+    font-size: 1rem;
+    font-family: sans-serif;
+}
+.descripcion{
+    width: 450px;
+}
+
+h1{
+    color: white;
+}

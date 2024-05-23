@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\Categoria;
+use App\Models\Precio;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -12,7 +15,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        //
+        $productos = Producto::paginate(8);
+        return view('productos.index', compact('productos'));
     }
 
     /**
@@ -20,7 +24,8 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+        $categoria = Categoria::all();
+        return view('productos.create', compact('categoria'));
     }
 
     /**
@@ -28,7 +33,18 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'stock' => 'required',
+            'precio' => 'required',
+            'imagen' => 'required',
+            'categoria_id' => 'required',
+        ]);
+
+        Producto::create($request->all());
+        return redirect()->route('productos.index')
+            ->with('success', 'Producto creado correctamente');
     }
 
     /**
@@ -36,7 +52,14 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
-        //
+        $precios=Precio::all();
+        return view('precios.index', ['producto_id' => $producto->id], compact('precios'));
+    }
+
+
+    public function verProducto(Producto $producto)
+    {
+        return view('productos.show', compact('producto'));
     }
 
     /**
@@ -44,7 +67,8 @@ class ProductoController extends Controller
      */
     public function edit(Producto $producto)
     {
-        //
+        $categoria = Categoria::all();
+        return view('productos.edit', compact('producto', 'categoria'));
     }
 
     /**
@@ -52,7 +76,18 @@ class ProductoController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
-        //
+        request()->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'stock' => 'required',
+            'precio' => 'required',
+            'imagen' => 'required',
+            'categoria_id' => 'required',
+        ]);
+
+        $producto->update($request->all());
+        return redirect()->route('productos.index')
+            ->with('success', 'Producto actualizado correctamente');
     }
 
     /**
@@ -60,6 +95,8 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
-        //
+        $producto->delete();
+        return redirect()->route('productos.index')
+            ->with('success', 'Producto eliminado correctamente');
     }
 }

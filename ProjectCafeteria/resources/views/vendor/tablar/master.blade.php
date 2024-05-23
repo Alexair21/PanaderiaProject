@@ -30,7 +30,6 @@
 
 </head>
 @yield('body')
-@include('tablar::extra.modal')
 
 {{-- Livewire Script --}}
 @if(config('tablar.livewire'))

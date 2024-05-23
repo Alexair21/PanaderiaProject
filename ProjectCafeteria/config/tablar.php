@@ -145,44 +145,62 @@ return [
     'menu' => [
         // Navbar items:
         [
+            'text' => 'Principal',
+            'icon' => 'ti ti-home',
+            'url' => '/principal'
+        ],
+        [
             'text' => 'Inicio',
             'icon' => 'ti ti-home',
             'url' => '/home'
         ],
 
         [
-            'text' => 'Menú',
+            'text' => 'Cliente',
+            'icon' => 'ti ti-user',
+            'url' => '/clientes'
+        ],
+
+
+
+        [
+            'text' => 'Acciones Admin',
             'url' => '//products',
             'icon' => 'ti ti-receipt',
+            'can' => 'ver-rol',
             //'active' => ['support1'],
             'submenu' => [
                 [
-                    'text' => 'Bebidas',
-                    'url' => '/bebidas',
-                    'icon' => 'ti ti-shopping-cart',
+                    'text' => 'Usuarios',
+                    'icon' => 'ti ti-user',
+                    'url' => '/usuarios'
                 ],
-
                 [
-                    'text' => 'Postres',
-                    'url' => '/products',
+                    'text' => 'Roles',
+                    'icon' => 'ti ti-user',
+                    'url' => '/roles'
+                ],
+                [
+                    'text' => 'Categorias',
+                    'icon' => 'ti ti-star',
+                    'url' => '/categorias',
+                    'can' => 'ver-rol',
+                ],
+                [
+                    'text' => 'Productos',
                     'icon' => 'ti ti-shopping-cart',
-                ]
+                    'url' => '/productos',
+                    'can' => 'ver-rol',
+                ],
             ],
         ],
 
         [
-            'text' => 'Delivery',
-            'url' => '#',
-            'icon' => 'ti ti-help',
-            'active' => ['support3'],
-            'submenu' => [
-                [
-                    'text' => 'Ticket',
-                    'url' => 'support3',
-                    'icon' => 'ti ti-article',
-                ]
-            ],
+            'text' => 'Menú',
+            'icon' => 'ti ti-user',
+            'url' => '/catalogos'
         ],
+
 
         [
             //'text' => 'Products',

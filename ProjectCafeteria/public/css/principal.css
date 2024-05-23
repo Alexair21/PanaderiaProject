@@ -1,0 +1,135 @@
+.anuncio {
+    background-color: #f4e2d1; /* Cambia el color de fondo según sea necesario */
+    border-radius: 10px;
+    overflow: hidden;
+}
+.texto-anuncio {
+    background-color: #f4e2d1; /* Cambia el color de fondo según sea necesario */
+    padding: 30px;
+}
+.texto-anuncio h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #2e5d50; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio p {
+    font-size: 2em;
+    color: #2e5d50; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio button {
+    background-color: #056a41;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+.texto-anuncio button:hover {
+    background-color: #044d32;
+}
+.imagen-anuncio img {
+    width: 100%;
+    height: auto;
+}
+
+
+button{
+    border-radius: 5%;
+    font-weight: bold;
+    width: 150px;
+}
+
+
+/* Seccion del segundo anuncio */
+.anuncio2 {
+    background-color: #d7da58; /* Cambia el color de fondo según sea necesario */
+    border-radius: 10px;
+    overflow: hidden;
+}
+.texto-anuncio2 {
+    background-color: #d7da58; /* Cambia el color de fondo según sea necesario */
+    padding: 30px;
+}
+.texto-anuncio2 h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #2e5d50; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio2 p {
+    font-size: 2em;
+    color: #2e5d50; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio2 button {
+    background-color: #056a41;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+.texto-anuncio2 button:hover {
+    background-color: #044d32;
+}
+
+
+/* Seccion del tercer anuncio */
+.anuncio3 {
+    background-color: #0021db; /* Cambia el color de fondo según sea necesario */
+    border-radius: 10px;
+    overflow: hidden;
+}
+.texto-anuncio3 {
+    background-color: #0021db; /* Cambia el color de fondo según sea necesario */
+    padding: 30px;
+}
+.texto-anuncio3 h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ffffff; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio3 p {
+    font-size: 2em;
+    color: #ffffff; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio3 button {
+    background-color: #6b6f6d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+.texto-anuncio3 button:hover {
+    background-color: #044d32;
+}
+
+/* Seccion del cuarto anuncio */
+.anuncio4 {
+    background-color: #ffffff; /* Cambia el color de fondo según sea necesario */
+    border-radius: 10px;
+    overflow: hidden;
+}
+.texto-anuncio4 {
+    background-color: #ffffff; /* Cambia el color de fondo según sea necesario */
+    padding: 30px;
+}
+.texto-anuncio4 h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #044d32; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio4 p {
+    font-size: 2em;
+    color: #044d32; /* Cambia el color del texto según sea necesario */
+}
+.texto-anuncio4 button {
+    background-color: #056a41;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+.texto-anuncio4 button:hover {
+    background-color: #044d32;
+}

@@ -18,6 +18,10 @@ return new class extends Migration
             $table->date('fecha');
             $table->decimal('monto', 8, 2);
             $table->string('detalles');
+
+            $table->unsignedBigInteger('ventas_id');
+            $table->foreign('ventas_id')->references('id')->on('ventas');
+
             $table->timestamps();
         });
     }
