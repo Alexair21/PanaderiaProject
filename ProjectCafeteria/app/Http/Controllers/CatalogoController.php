@@ -15,7 +15,8 @@ class CatalogoController extends Controller
     public function index()
     {
         $categorias = Categoria::all();
-        return view('catalogos.index', compact('categorias'));
+        $productos = Producto::all();
+        return view('catalogos.index', compact('categorias', 'productos'));
     }
 
     /**

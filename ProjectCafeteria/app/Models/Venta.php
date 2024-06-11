@@ -19,8 +19,13 @@ class Venta extends Model
 
     public $timestamps = false;
 
-    public function clientes()
+    public function cliente()
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
+
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class);
     }
 }

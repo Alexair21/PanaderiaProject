@@ -1,12 +1,14 @@
 @extends('tablar::page')
 
+@section('title', 'Menu')
+
 @section('content')
-    <!-- Page header -->
-    <div class="page-header d-print-none">
+    <!-- Page header with background image -->
+    <div class="page-header d-print-none" style="background-image: url('https://vip-restaurant.vamtam.com/wp-content/uploads/2015/01/slider-shop-bg.jpg'); background-size: cover; background-position: center; padding: 150px 0;">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">
+                <div class="col text-center">
+                    <h2 class="page-title text-white">
                         Menú de productos
                     </h2>
                 </div>
@@ -17,41 +19,39 @@
     <!-- Page body -->
     <div class="page-body">
         <div class="container-xl">
-            <div class="row row-deck row-cards">
-                <div class="col-3">
+            <div class="row">
+                <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Categorías</h3>
-                        </div>
-                        <div class="list-group list-group-flush">
-                            @foreach ($categorias as $categoria)
-                                <a href="#categoria-{{ $categoria->id }}" class="list-group-item list-group-item-action">{{ $categoria->nombre }}</a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                <div class="col-9">
-                    <div class="card">
-                        <div class="container">
-                            <div class="row">
+                        <div class="card-body">
+                            <!-- Categories -->
+                            <div class="categories text-center mb-4">
                                 @foreach ($categorias as $categoria)
-                                    <div id="categoria-{{ $categoria->id }}" class="col-12 mb-4">
-                                        <br>
-                                        <center><h1 class=" ">{{ $categoria->nombre }}</h1></center>
-                                        <br><br>
+                                    <a href="#categoria-{{ $categoria->id }}" class="btn category-btn m-1">{{ $categoria->nombre }}</a>
+                                @endforeach
+                            </div>
+                            <!-- Products -->
+                            <div class="products">
+                                @foreach ($categorias as $categoria)
+                                    <div id="categoria-{{ $categoria->id }}" class="category-section mb-5">
+                                        <h3 class="text-center">{{ $categoria->nombre }}</h3>
                                         <div class="row">
                                             @forelse ($categoria->productos as $producto)
-                                                <div class="col-md-6 mb-4">
-                                                    <a href="{{ route('productos.verProducto', $producto->id) }}" class="product-card d-flex align-items-center">
-                                                        <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" class="img-fluid product-image me-3">
-                                                        <div>
-                                                            <h3 class="product-name">{{ $producto->nombre }}</h3>
-                                                            <p> Desde: S/.{{ $producto->precio }}</p>
+                                                <div class="col-md-3 mb-4">
+                                                    <div class="card h-100">
+                                                        <div class="product-image-wrapper">
+                                                            <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" class="product-image">
                                                         </div>
-                                                    </a>
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">{{ $producto->nombre }}</h5>
+                                                            <p class="card-text">Desde: S/.{{ $producto->precio }}</p>
+                                                            <a href="{{ route('productos.verProducto', $producto->id) }}" class="btn btn-primary">Ver Producto</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             @empty
-                                                <p>No hay productos en esta categoría</p>
+                                                <div class="col-12">
+                                                    <p class="text-center">No hay productos en esta categoría</p>
+                                                </div>
                                             @endforelse
                                         </div>
                                     </div>
@@ -65,30 +65,44 @@
     </div>
 @endsection
 
-<!-- Add some custom CSS for better appearance -->
 @section('css')
     <style>
-        .list-group-item {
-            cursor: pointer;
+        .page-header {
+            text-align: center;
+            padding: 100px 0;
+            background-image: url('https://vip-restaurant.vamtam.com/wp-content/uploads/2015/01/slider-shop-bg.jpg');
+            background-size: cover;
+            background-position: center;
         }
-        .product-card {
+        .page-title {
+            font-size: 2.5rem;
+            color: #fff;
+        }
+        .categories a {
+            color: green;
             text-decoration: none;
-            color: inherit;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+        }
+        .categories a:hover {
+            border-bottom: 2px solid green;
+        }
+        .category-section {
+            margin-top: 20px;
+        }
+        .product-image-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px; /* Adjust the height as needed */
         }
         .product-image {
-            max-width: 100px;
-            max-height: 100px;
+            max-height: 150px; /* Adjust the max-height as needed */
+            max-width: 100%;
+            object-fit: contain;
         }
-        .page-body .row {
-            margin-left: 0;
-            margin-right: 0;
-        }
-        .page-body .col-3, .page-body .col-9 {
-            display: flex;
-            flex-direction: column;
-        }
-        .page-body .col-3 .card, .page-body .col-9 .card {
-            flex: 1;
+        .card {
+            border: none;
         }
     </style>
 @endsection

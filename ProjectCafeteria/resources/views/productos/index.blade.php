@@ -1,5 +1,7 @@
 @extends('tablar::page')
 
+@section('title', 'Productos')
+
 @section('content')
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -56,14 +58,14 @@
                                 </div>
 
                                 <!-- Busqueda
-                                            <div class="ms-auto text-muted">
-                                            Search:
-                                            <div class="ms-2 d-inline-block">
-                                                <input type="text" class="form-control form-control-sm"
-                                                       aria-label="Search invoice">
+                                                <div class="ms-auto text-muted">
+                                                Search:
+                                                <div class="ms-2 d-inline-block">
+                                                    <input type="text" class="form-control form-control-sm"
+                                                           aria-label="Search invoice">
+                                                </div>
                                             </div>
-                                        </div>
-                                        -->
+                                            -->
 
 
                             </div>
@@ -73,8 +75,6 @@
                                 <thead style="blackground-color: #6777ef;">
                                     <th>ID</th>
                                     <th>Nombre</th>
-                                    <th>Descripcion</th>
-                                    <th>Stock</th>
                                     <th>Precio S/.</th>
                                     <th>Imagen</th>
                                     <th>Categoria</th>
@@ -86,9 +86,7 @@
                                         <tr>
                                             <td>{{ $producto->id }}</td>
                                             <td>{{ $producto->nombre }}</td>
-                                            <td>{{ $producto->descripcion }}</td>
-                                            <td>{{ $producto->stock }}</td>
-                                            <td>{{ $producto->precio }}</td>
+                                            <td> S/. {{ $producto->precio }}</td>
                                             <td>
                                                 <img src="{{ $producto->imagen }}" alt="Imagen del producto"
                                                     style="width: 100px;">
@@ -102,13 +100,13 @@
                                                 <a href="{{ route('productos.edit', $producto->id) }}"
                                                     class="btn btn-sm btn-primary">Editar</a>
 
-                                                    {!! Form::open([
-                                                        'method' => 'DELETE',
-                                                        'route' => ['productos.destroy', $producto->id],
-                                                        'style' => 'display:inline',
-                                                    ]) !!}
-                                                    {!! Form::submit('Eliminar', ['class' => 'btn btn-sm btn-danger']) !!}
-                                                    {!! Form::close() !!}
+                                                {!! Form::open([
+                                                    'method' => 'DELETE',
+                                                    'route' => ['productos.destroy', $producto->id],
+                                                    'style' => 'display:inline',
+                                                ]) !!}
+                                                {!! Form::submit('Eliminar', ['class' => 'btn btn-sm btn-danger']) !!}
+                                                {!! Form::close() !!}
                                             </td>
                                         </tr>
                                     @endforeach

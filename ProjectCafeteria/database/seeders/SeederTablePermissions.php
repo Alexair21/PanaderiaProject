@@ -27,6 +27,10 @@ class SeederTablePermissions extends Seeder
             'editar-cliente',
             'borrar-cliente',
 
+            'Acciones-cliente',
+            'Acciones-barista',
+            'Acciones-cajero',
+
         ];
 
         foreach ($permisos as $permiso) {

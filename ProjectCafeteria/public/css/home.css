@@ -31,3 +31,50 @@
 .f-right {
     float: right;
 }
+
+.custom-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    border-left: 5px solid;
+}
+
+.custom-card-block {
+    padding: 20px;
+    position: relative;
+}
+
+.custom-card-title {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.custom-card-count {
+    font-size: 32px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.custom-card-icon {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.1);
+}
+
+.custom-card-link a {
+    text-decoration: none;
+}
+
+.custom-card-link a:hover {
+    text-decoration: underline;
+}
+
+.custom-card{
+    border-left-color: #17943f;
+}

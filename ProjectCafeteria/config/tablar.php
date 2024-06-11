@@ -43,12 +43,15 @@ return [
         'enabled' => true,
         'img' => [
             'path' => 'assets/logo.jpg',
-            'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
             'height' => 50,
+            'url' => '/clientes',
         ],
+        'url' => '/clientes',
     ],
+
+
 
     /*
      *
@@ -147,20 +150,48 @@ return [
         [
             'text' => 'Principal',
             'icon' => 'ti ti-home',
-            'url' => '/principal'
+            'url' => '/principal',
+            'can' => 'Acciones-cliente',
+        ],
+        [
+            'text' => 'Menú',
+            'icon' => 'ti ti-menu',
+            'url' => '/catalogos'
         ],
         [
             'text' => 'Inicio',
             'icon' => 'ti ti-home',
-            'url' => '/home'
+            'url' => '/home',
+            'can' => 'ver-rol',
         ],
 
         [
-            'text' => 'Cliente',
+            'text' => 'Clientes',
             'icon' => 'ti ti-user',
-            'url' => '/clientes'
+            'url' => '/clientes',
+            'can' => 'ver-rol'
         ],
 
+        [
+            'text' => 'Delivery',
+            'icon' => 'ti ti-car',
+            'url' => '/delivery',
+            'can' => 'ver-rol'
+        ],
+
+
+        [
+            'text' => 'Ventas',
+            'icon' => 'ti ti-cash',
+            'url' => '/ventas',
+            'can' => ['Acciones-cajero']
+        ],
+        [
+            'text' => 'Pedidos',
+            'icon' => 'ti ti-receipt',
+            'url' => '/pedidos',
+            'can' => ['Acciones-barista','Acciones-cajero']
+        ],
 
 
         [
@@ -192,14 +223,16 @@ return [
                     'url' => '/productos',
                     'can' => 'ver-rol',
                 ],
+                [
+                    'text' => 'Voucher',
+                    'icon' => 'ti ti-receipt',
+                    'url' => '/vouchers',
+                    'can' => 'ver-rol',
+                ],
             ],
         ],
 
-        [
-            'text' => 'Menú',
-            'icon' => 'ti ti-user',
-            'url' => '/catalogos'
-        ],
+
 
 
         [

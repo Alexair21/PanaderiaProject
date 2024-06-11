@@ -12,7 +12,9 @@ class VentaController extends Controller
      */
     public function index()
     {
-        //
+        return view('ventas.index', [
+            'ventas' => Venta::all()
+        ]);
     }
 
     /**
@@ -60,6 +62,8 @@ class VentaController extends Controller
      */
     public function destroy(Venta $venta)
     {
-        //
+        $venta->delete();
+        return redirect()->route('ventas.index')
+            ->with('success', 'Venta eliminada correctamente');
     }
 }

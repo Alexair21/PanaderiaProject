@@ -14,14 +14,10 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->string('codigo');
-            $table->string('tipo');
             $table->date('fecha');
-            $table->decimal('monto', 8, 2);
-            $table->string('detalles');
-
+            $table->string('estado');
             $table->unsignedBigInteger('ventas_id');
-            $table->foreign('ventas_id')->references('id')->on('ventas');
-
+            $table->foreign('ventas_id')->references('id')->on('ventas')->onDelete('cascade');
             $table->timestamps();
         });
     }

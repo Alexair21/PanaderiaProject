@@ -15,7 +15,7 @@
                     </h2>
                 </div>
                 <!-- Page title actions -->
-                @can('crear-cliente')
+                @can('')
                     <div class="col-12 col-md-auto ms-auto d-print-none">
                         <div class="btn-list">
                             <a href="{{ route('clientes.create') }}" class="btn btn-primary d-none d-sm-inline-block">
@@ -73,12 +73,11 @@
                         <div class="table-responsive">
                             <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead style="blackground-color: #6777ef;">
-                                    <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Email</th>
                                     <th>Telefono</th>
                                     <th>Direccion</th>
-                                    @can('editar-cliente')
+                                    @can('')
                                     <th>Acciones</th>
                                     @endcan
 
@@ -86,14 +85,13 @@
                                 <tbody>
                                     @foreach ($clientes as $cliente)
                                         <tr>
-                                            <td>{{ $cliente->id }}</td>
                                             <td>{{ $cliente->nombre }}</td>
                                             <td>{{ $cliente->email }}</td>
                                             <td>{{ $cliente->telefono }}</td>
                                             <td>{{ $cliente->direccion }}</td>
 
                                             <td>
-                                                @can('editar-cliente')
+                                                @can('')
                                                     <a href="{{ route('clientes.edit', $cliente->id) }}"
                                                         class="btn btn-sm btn-primary">Editar</a>
                                                 @endcan

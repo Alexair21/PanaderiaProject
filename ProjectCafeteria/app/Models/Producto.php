@@ -26,4 +26,11 @@ class Producto extends Model
     {
         return $this->hasMany(Precio::class);
     }
+
+    protected $table = 'productos';
+
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class);
+    }
 }

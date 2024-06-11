@@ -10,16 +10,18 @@ class ClienteController extends Controller
     public function __construct()
     {
         $this->middleware('permission:ver-cliente|crear-cliente|editar-cliente|borrar-cliente', ['only' => ['index']]);
-        $this->middleware('permission:crear-cliente', ['only' => ['create','store']]);
-        $this->middleware('permission:editar-cliente', ['only' => ['edit','update']]);
+        $this->middleware('permission:crear-cliente', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar-cliente', ['only' => ['edit', 'update']]);
         $this->middleware('permission:borrar-cliente', ['only' => ['destroy']]);
     }
 
     public function index()
     {
-        $clientes = Cliente::paginate(5);
+        $clientes = Cliente::where('id', '>=', 4)->paginate(10); // Ajusta el valor de 10 según sea necesario para la paginación
+
         return view('clientes.index', compact('clientes'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -59,7 +61,7 @@ class ClienteController extends Controller
      */
     public function edit(Cliente $cliente)
     {
-       return view('clientes.edit', compact('cliente'));
+        return view('clientes.edit', compact('cliente'));
     }
 
     /**
@@ -84,7 +86,7 @@ class ClienteController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
-        $cliente -> delete();
+        $cliente->delete();
         return redirect()->route('clientes.index')
             ->with('success', 'Cliente eliminado correctamente');
     }

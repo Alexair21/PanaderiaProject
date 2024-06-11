@@ -159,7 +159,7 @@ class ProductoSeeder extends Seeder
                 'stock' => 25,
                 'precio' => 12.50,
                 'imagen' => 'https://www.starbucks.pe/Multimedia/productos/SANDWICH_EGGMONT_V2.png',
-                'categoria_id' => 3,
+                'categoria_id' => 4,
             ],
 
             [
@@ -168,7 +168,7 @@ class ProductoSeeder extends Seeder
                 'stock' => 25,
                 'precio' => 9.50,
                 'imagen' => 'https://www.starbucks.pe/Multimedia/productos/EMPANADA_DE_LOMO_V2.png',
-                'categoria_id' => 3,
+                'categoria_id' => 4,
             ],
 
             [
@@ -177,7 +177,7 @@ class ProductoSeeder extends Seeder
                 'stock' => 25,
                 'precio' => 13.50,
                 'imagen' => 'https://www.starbucks.pe/Multimedia/productos/SANDWICH_CHICKEN_PANINO_V2.png',
-                'categoria_id' => 3,
+                'categoria_id' => 4,
             ],
 
             [
@@ -186,7 +186,7 @@ class ProductoSeeder extends Seeder
                 'stock' => 25,
                 'precio' => 13.50,
                 'imagen' => 'https://www.starbucks.pe/Multimedia/productos/SANDWICH_CHICKEN_CIABATTA_V2.png',
-                'categoria_id' => 3,
+                'categoria_id' => 4,
             ],
 
             //jugos
@@ -196,7 +196,7 @@ class ProductoSeeder extends Seeder
                 'stock' => 25,
                 'precio' => 13.00,
                 'imagen' => 'https://www.starbucks.pe/Multimedia/productos/JUGO_DE_PI%C3%91A_Y_MANZANA_V2.png',
-                'categoria_id' => 3,
+                'categoria_id' => 5,
             ],
             //[
                 //'nombre' => 'Torta de chocolate',
