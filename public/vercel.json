@@ -11,5 +11,13 @@
         "src": "/(.*)",
         "dest": "public/index.php"
       }
-    ]
+    ],
+    "build": {
+      "env": {
+        "COMPOSER_CACHE_DIR": ".vercel/cache"
+      },
+      "commands": {
+        "install": "composer install"
+      }
+    }
   }
