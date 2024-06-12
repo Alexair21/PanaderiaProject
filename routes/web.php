@@ -70,7 +70,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('vouchers', VoucherController::class);
     Route::get('/voucher', [VoucherController::class, 'generateVoucher'])->name('voucher.generate');
 
+
     Route::get('/delivery', [VoucherController::class, 'verdelivery']);
+
 
     Route::get('/principal', function () {
         return view('principal');

@@ -179,7 +179,6 @@ return [
             'can' => 'ver-rol'
         ],
 
-
         [
             'text' => 'Ventas',
             'icon' => 'ti ti-cash',
