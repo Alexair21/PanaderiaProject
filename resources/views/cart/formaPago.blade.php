@@ -6,10 +6,8 @@
     <div class="container-xl">
         <br><br>
         <div class="row">
-            <!-- Left Column: Order Preference and Payment Methods -->
             <div class="col-md-5">
                 @can('Acciones-cliente')
-                    <!-- Order Preference Section -->
                     <div class="card mb-4">
                         <div class="card-header">
                             <h3 class="card-title">¿Cómo lo quiere su pedido?</h3>
@@ -34,13 +32,17 @@
                                         Recojo en tienda
                                     </label>
                                 </div>
-                                <div id="homeAddress" style="display: none;" class="mt-3">
+                                <div id="customerNameField" class="mt-3">
+                                    <label for="customerName" class="form-label">Nombre del Cliente</label>
+                                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Ingrese su nombre" disabled>
+                                </div>
+                                <div id="homeAddress" class="mt-3">
                                     <label for="address" class="form-label">Dirección de entrega</label>
                                     <input type="text" class="form-control" id="address" value="{{ Auth::user()->cliente->direccion }}" readonly>
                                 </div>
-                                <div id="storePickup" style="display: none;" class="mt-3">
+                                <div id="storePickup" class="mt-3">
                                     <label for="storeSelect" class="form-label">Seleccione la tienda</label>
-                                    <select class="form-select" id="storeSelect">
+                                    <select class="form-select" id="storeSelect" disabled>
                                         <option value="tienda1">Starbucks - Av. Prol. César Vallejo 1345, Trujillo</option>
                                         <option value="tienda2">Starbucks - VXX2+363, Mall Aventura Plaza, Av América Oeste, Trujillo</option>
                                     </select>
@@ -49,9 +51,9 @@
                                 <form action="{{ route('session') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="total" value="{{ $total * 100 }}">
-                                    <!-- El total debe estar en céntimos -->
                                     <input type="hidden" name="description" value="{{ json_encode($cartItems) }}">
                                     <input type="hidden" name="estadoVariable" id="estadoVariable" value="">
+                                    <input type="hidden" name="customerNameHidden" id="customerNameHidden" value="">
                                     <button type="submit" id="checkout-live-button" class="btn btn-success">Proceder a pagar</button>
                                 </form>
                             </div>
@@ -60,33 +62,35 @@
                 @endcan
 
                 @can('Acciones-barista')
-                    <!-- Payment Methods Section -->
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Métodos de Pago</h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-check">
+                            <div class="form-check mb-3">
                                 <input class="form-check-input" type="radio" name="paymentMethod" id="cash" value="2">
                                 <label class="form-check-label" for="cash">
                                     Efectivo
                                 </label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="paymentMethod" id="card" value="3">
-                                <label class="form-check-label" for="card">
-                                    Tarjeta
-                                </label>
-                            </div>
-
-                            <div id="cashFields" style="display: none;">
+                            <div id="cashFields">
                                 <div class="mt-3">
-                                    <label for="cashGiven" class="form-label">Monto entregado</label>
-                                    <input type="number" class="form-control" id="cashGiven" placeholder="Ingrese el monto entregado">
+                                    <label for="customerNameCash" class="form-label">Nombre del Cliente</label>
+                                    <input type="text" class="form-control" id="customerNameCash" name="customerNameCash" placeholder="Ingrese su nombre" disabled>
                                 </div>
-                                <div class="mt-3">
-                                    <label for="change" class="form-label">Vuelto</label>
-                                    <input type="text" class="form-control" id="change" readonly>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="cashGiven" class="form-label">Monto entregado</label>
+                                            <input type="number" class="form-control" id="cashGiven" placeholder="Ingrese el monto entregado" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="change" class="form-label">Vuelto</label>
+                                            <input type="text" class="form-control" id="change" readonly>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="insufficientAmountWarning" class="alert alert-danger mt-3" style="display: none;">
                                     El monto entregado no es suficiente.
@@ -97,27 +101,36 @@
                                         <input type="hidden" name="total" value="{{ $total * 100 }}">
                                         <input type="hidden" name="description" value="{{ json_encode($cartItems) }}">
                                         <input type="hidden" name="estadoVariable" id="estadoVariable-cash" value="2">
+                                        <input type="hidden" name="customerNameHiddenCash" id="customerNameHiddenCash" value="">
                                         <button type="submit" class="btn btn-success" id="confirmCashPaymentButton" disabled>Confirmar Pago</button>
                                     </form>
                                 </div>
                             </div>
-
-                            <div id="cardFields" style="display: none;">
+                            <hr>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="card" value="3">
+                                <label class="form-check-label" for="card">
+                                    Tarjeta
+                                </label>
+                            </div>
+                            <div id="cardFields">
                                 <form action="{{ route('session') }}" method="POST">
                                     @csrf
+                                    <div class="mt-3">
+                                        <label for="customerNameCard" class="form-label">Nombre del Cliente</label>
+                                        <input type="text" class="form-control" id="customerNameCard" name="customerNameCard" placeholder="Ingrese su nombre" disabled>
+                                    </div>
                                     <input type="hidden" name="total" value="{{ $total * 100 }}">
-                                    <!-- El total debe estar en céntimos -->
                                     <input type="hidden" name="description" value="{{ json_encode($cartItems) }}">
-                                    <input type="hidden" name="estadoVariable" id="estadoVariable-card" value="3">
-                                    <button type="submit" id="checkout-live-button" class="btn btn-success">Proceder a pagar</button>
+                                    <input type="hidden" name="estadoVariable" id="estadoVariable" value="">
+                                    <input type="hidden" name="customerNameHidden" id="customerNameHidden" value="">
+                                    <button type="submit" id="checkout-live-button" class="btn btn-success" disabled>Proceder a pagar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 @endcan
             </div>
-
-            <!-- Right Column: Cart Summary -->
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-header">
@@ -162,70 +175,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const cashRadio = document.getElementById('cash');
-            const cardRadio = document.getElementById('card');
-            const cashFields = document.getElementById('cashFields');
-            const cardFields = document.getElementById('cardFields');
-            const cardButton = document.getElementById('checkout-live-button');
-            const cashGivenInput = document.getElementById('cashGiven');
-            const changeInput = document.getElementById('change');
-            const totalAmount = {{ $total }};
-            const detailsInput = document.getElementById('details');
-            const estadoVariableInput = document.getElementById('estadoVariable');
-            const estadoVariableDisplay = document.getElementById('estadoVariableDisplay');
-            const confirmCashPaymentButton = document.getElementById('confirmCashPaymentButton');
-            const insufficientAmountWarning = document.getElementById('insufficientAmountWarning');
-
             const deliveryRadio = document.getElementById('delivery');
             const deliveryOptions = document.getElementById('deliveryOptions');
             const sendHomeRadio = document.getElementById('sendHome');
             const pickupStoreRadio = document.getElementById('pickupStore');
             const homeAddress = document.getElementById('homeAddress');
             const storePickup = document.getElementById('storePickup');
-
-            function updateChange() {
-                const cashGiven = parseFloat(cashGivenInput.value) || 0;
-                const change = cashGiven - totalAmount;
-                changeInput.value = change >= 0 ? `S/. ${change.toFixed(2)}` : 'Monto insuficiente';
-
-                if (change < 0) {
-                    confirmCashPaymentButton.disabled = true;
-                    insufficientAmountWarning.style.display = 'block';
-                } else {
-                    confirmCashPaymentButton.disabled = false;
-                    insufficientAmountWarning.style.display = 'none';
-                }
-            }
-
-            function updateEstadoVariable(value) {
-                estadoVariableInput.value = value;
-                estadoVariableDisplay.value = value;
-            }
-
-            cashRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    cashFields.style.display = 'block';
-                    cardFields.style.display = 'none';
-                    cardButton.style.display = 'none'; // Oculta el botón cuando se selecciona efectivo
-                    updateEstadoVariable('2');
-                }
-            });
-
-            cardRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    cashFields.style.display = 'none';
-                    cardFields.style.display = 'block';
-                    cardButton.style.display = 'block'; // Muestra el botón cuando se selecciona tarjeta
-                    updateEstadoVariable('3');
-                }
-            });
-
-            cashGivenInput.addEventListener('input', updateChange);
+            const customerNameInput = document.getElementById('customerName');
+            const customerNameHiddenInput = document.getElementById('customerNameHidden');
+            const estadoVariableInput = document.getElementById('estadoVariable');
+            const checkoutLiveButton = document.getElementById('checkout-live-button');
 
             deliveryRadio.addEventListener('change', function() {
                 if (this.checked) {
                     deliveryOptions.style.display = 'block';
-                    updateEstadoVariable('1');
+                    customerNameInput.disabled = false;
+                    estadoVariableInput.value = '1'; // Set estadoVariable to 'Delivery'
+                } else {
+                    deliveryOptions.style.display = 'none';
+                    customerNameInput.disabled = true;
                 }
             });
 
@@ -243,19 +211,19 @@
                 }
             });
 
-            // Crear descripción para voucher
-            function createDescription() {
-                const cartItems = @json($cartItems);
-                let description = cartItems.map(item =>
-                    `${item.name} (${item.options.descripcion}), Cantidad: ${item.qty}`).join('; ');
-                if (!description) {
-                    description = 'Tamaño base';
-                }
-                detailsInput.value = description;
-            }
+            customerNameInput.addEventListener('input', function() {
+                customerNameHiddenInput.value = customerNameInput.value;
+            });
 
-            // Crear descripción al cargar la página
-            createDescription();
+            checkoutLiveButton.addEventListener('click', function() {
+                if (deliveryRadio.checked) {
+                    estadoVariableInput.value = '1'; // Delivery
+                } else if (document.getElementById('cash').checked) {
+                    estadoVariableInput.value = '2'; // Efectivo
+                } else if (document.getElementById('card').checked) {
+                    estadoVariableInput.value = '3'; // Tarjeta
+                }
+            });
         });
     </script>
 @endsection

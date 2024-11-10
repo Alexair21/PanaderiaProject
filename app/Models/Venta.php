@@ -12,7 +12,7 @@ class Venta extends Model
     protected $table = 'ventas';
 
     protected $fillable = [
-        'cliente_id',
+        'cliente_nombre',
         'fecha',
         'total',
     ];
@@ -23,4 +23,5 @@ class Venta extends Model
     {
         return $this->belongsTo(Cliente::class, 'cliente_id');
     }
+
 }

@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_venta');
             $table->decimal('total', 8, 2);
-
-            //clave foranea
-            $table->bigInteger('cliente_id')->unsigned();
-            $table->foreign('cliente_id')->references('id')->on('clientes');
+            $table->enum('estado', ['No pagado', 'Pagado'])->default('No pagado');
+            $table->string('cliente_nombre')->nullable();
             $table->timestamps();
         });
     }

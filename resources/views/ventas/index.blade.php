@@ -27,28 +27,15 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Invoices</h3>
-                        </div>
-                        <div class="card-body border-bottom py-3">
-                            <div class="d-flex">
-                                <div class="text-muted">
-                                    Se vizualizan
-                                    <div class="mx-2 d-inline-block">
-                                        <input type="text" class="form-control form-control-sm" value="8"
-                                            size="3" aria-label="Invoices count">
-                                    </div>
-                                    usuarios
-                                </div>
-                            </div>
-                        </div>
                         <div class="table-responsive">
                             <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead style="blackground-color: #6777ef;">
                                     <th>ID</th>
                                     <th>Fecha de venta</th>
                                     <th>Total</th>
+                                    <th>Estado</th>
                                     <th>Cliente</th>
+                                    <th>Pagar</th>
                                     <th>Acciones</th>
                                 </thead>
                                 <tbody>
@@ -57,7 +44,11 @@
                                             <td>{{ $venta->id }}</td>
                                             <td>{{ $venta->fecha_venta }}</td>
                                             <td>{{ $venta->total }}</td>
-                                            <td>{{ $venta->cliente->nombre }}</td>
+                                            <td>{{ $venta->estado }}</td>
+                                            <td>{{ $venta->cliente_nombre}}</td>
+                                            <td>
+                                                <a href="{{ route('estadoPagar', ['venta' => $venta->id]) }}" class="btn btn-primary">Proceder al pago</a>
+                                            </td>
                                             <td>
                                                     {!! Form::open([
                                                         'method' => 'DELETE',

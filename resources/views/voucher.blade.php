@@ -65,7 +65,7 @@
         <!-- Cuello -->
         <div class="details">
             <p><strong>Fecha:</strong> {{ date('d/m/Y H:i') }}</p>
-            <p><strong>Cliente:</strong> {{ $cliente }}</p>
+            <p><strong>Cliente:</strong> {{ $venta->cliente_nombre }}</p>
             <p><strong>Pedido #:</strong> {{ $venta->id }}</p>
             <p><strong>Codigo:</strong> {{ $voucher->codigo}}</p>
         </div>

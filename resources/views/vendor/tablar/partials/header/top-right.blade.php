@@ -8,6 +8,7 @@
             @else
                 <div>
                     <a href="{{ route('login') }}" class="btn btn-primary">Iniciar Sesión</a>
+                    <a href="{{ route('register') }}" class="btn btn-succes">Registrarse</a>
                 </div>
             @endif
 

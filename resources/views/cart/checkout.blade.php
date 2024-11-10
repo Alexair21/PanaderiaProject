@@ -17,24 +17,34 @@
             </div>
         </div>
     </div>
-
+    <br>
     <div class="container-xl">
         <div class="row g-2 align-items-center">
             <div class="col">
-                <a href="{{ route('clear') }}" class="btn float-end"
-                    style="background-color: #00362f; color: #f9f9f9;">Vaciar carrito</a>
-                @if (Cart::count() > 0)
-                    <div class="container-xl">
-                        <div class="row g-2 align-items-center">
-                            <div class="col">
-                                <a href="{{ route('formaPago') }}" class="btn btn-primary float-end">Proceder al pago</a>
-                            </div>
+                <div class="d-flex align-items-center">
+                    @can('Acciones-barista')
+                    <form action="{{ route('guardarVenta') }}" method="POST" class="d-flex align-items-center me-2">
+                        @csrf
+                        <div class="me-2">
+                            <input type="text" class="form-control" id="cliente_nombre" name="cliente_nombre"
+                                placeholder="Nombre del cliente" required>
                         </div>
-                    </div>
-                @endif
+                        <button type="submit" class="btn" style="background-color: #ebc60ec8; color: #f9f9f9;">Guardar
+                            pedido</button>
+                    </form>
+                    @endcan
+                    <a href="{{ route('clear') }}" class="btn me-2"
+                        style="background-color: #00362f; color: #f9f9f9;">Vaciar carrito</a>
+                    @can('Acciones-cliente')
+                        @if (Cart::count() > 0)
+                            <a href="{{ route('formaPago') }}" class="btn btn-primary">Proceder al pago</a>
+                        @endif
+                    @endcan
+                </div>
             </div>
         </div>
     </div>
+
 
 
     <div class="page-body">

@@ -53,10 +53,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('cart/checkout', [App\Http\Controllers\CartController::class, 'checkout'])->name('checkout');
     Route::get('cart/clear', [App\Http\Controllers\CartController::class, 'clear'])->name('clear');
     Route::post('cart/removeitem', [App\Http\Controllers\CartController::class, 'removeItem'])->name('removeitem');
+    Route::post('cart/guardarVenta', [App\Http\Controllers\CartController::class, 'guardarVenta'])->name('guardarVenta');
 
     //definir la ruta a ver forma de pago
     Route::get('cart/formaPago', [App\Http\Controllers\CartController::class, 'formaPago'])->name('formaPago');
     Route::post('cart/pagoEfectivo', [App\Http\Controllers\CartController::class, 'confirmarPagoEfectivo'])->name('confirmarPagoEfectivo');
+    Route::get('cart/estadoPagar/{venta}', [App\Http\Controllers\CartController::class, 'estadoPagar'])->name('estadoPagar');
+
 
     Route::post('/session', [StripeController::class, 'session'])->name('session');
     Route::get('/success', function () {
@@ -77,4 +80,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/principal', function () {
         return view('principal');
     });
+
+    Route::get('/inicio', function () {
+        return view('principal');
+    });
+
+    Route::get('/inicio', [HomeController::class, 'principal']);
 });

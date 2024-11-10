@@ -161,7 +161,7 @@ return [
         [
             'text' => 'Inicio',
             'icon' => 'ti ti-home',
-            'url' => '/home',
+            'url' => '/inicio',
             'can' => 'ver-rol',
         ],
 
@@ -222,13 +222,16 @@ return [
                     'url' => '/productos',
                     'can' => 'ver-rol',
                 ],
-                [
-                    'text' => 'Voucher',
-                    'icon' => 'ti ti-receipt',
-                    'url' => '/vouchers',
-                    'can' => 'ver-rol',
-                ],
             ],
+
+        ],
+
+        [
+            'text' => 'Voucher',
+            'icon' => 'ti ti-receipt',
+            'url' => '/vouchers',
+            'can' => ['ver-rol','Acciones-cajero']
+
         ],
 
 

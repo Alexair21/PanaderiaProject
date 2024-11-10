@@ -30,7 +30,6 @@
                         <div class="table-responsive">
                             <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead style="blackground-color: #6777ef;">
-                                    <th>Dirección</th>
                                     <th>Fecha</th>
                                     <th>Estado</th>
                                     <th>N° Venta</th>
@@ -41,7 +40,6 @@
                                     @foreach ($vouchers as $voucher)
                                         @if ($voucher->estado == 'Delivery')
                                             <tr>
-                                                <td>{{ $voucher->venta->cliente->direccion}}</td>
                                                 <td>{{ $voucher->fecha }}</td>
                                                 <td>{{ $voucher->estado }}</td>
                                                 <td>{{ $voucher->venta->id }}</td>
