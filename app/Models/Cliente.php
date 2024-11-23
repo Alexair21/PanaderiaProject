@@ -19,11 +19,6 @@ class Cliente extends Model
     ];
     public $timestamps = false;
 
-    public function ventas()
-    {
-        return $this->hasMany(Venta::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);

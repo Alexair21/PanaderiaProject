@@ -12,9 +12,13 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        $pedidos = Pedido::all();
+        // Carga las relaciones 'detalles' y 'platillo' para optimizar consultas
+        $pedidos = Pedido::with(['detalles.platillo'])->get();
+
+        // Enviar los pedidos con relaciones cargadas a la vista
         return view('pedidos.index', compact('pedidos'));
     }
+
 
     /**
      * Show the form for creating a new resource.

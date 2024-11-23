@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\SubCategoria;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
@@ -13,7 +14,8 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::paginate(8);
-        return view('categorias.index', compact('categorias'));
+        $subcategorias = SubCategoria::all();
+        return view('categorias.index', compact('categorias', 'subcategorias'));
     }
 
     /**
@@ -29,14 +31,15 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
+        $request->validate([
             'nombre' => 'required',
             'descripcion' => 'required',
+            'estado' => 'required|boolean', // Validación para el campo estado
         ]);
 
         Categoria::create($request->all());
         return redirect()->route('categorias.index')
-            ->with('success', 'Categoria creada correctamente');
+            ->with('success', 'Categoría creada correctamente');
     }
 
     /**
@@ -44,7 +47,7 @@ class CategoriaController extends Controller
      */
     public function show(Categoria $categoria)
     {
-
+        return view('categorias.show', compact('categoria'));
     }
 
     /**
@@ -60,14 +63,15 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, Categoria $categoria)
     {
-        request()->validate([
+        $request->validate([
             'nombre' => 'required',
             'descripcion' => 'required',
+            'estado' => 'required|boolean', // Validación para el campo estado
         ]);
 
         $categoria->update($request->all());
         return redirect()->route('categorias.index')
-            ->with('success', 'Categoria actualizada correctamente');
+            ->with('success', 'Categoría actualizada correctamente');
     }
 
     /**
@@ -77,6 +81,6 @@ class CategoriaController extends Controller
     {
         $categoria->delete();
         return redirect()->route('categorias.index')
-            ->with('success', 'Categoria eliminada correctamente');
+            ->with('success', 'Categoría eliminada correctamente');
     }
 }

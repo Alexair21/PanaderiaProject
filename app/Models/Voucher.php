@@ -13,11 +13,11 @@ class Voucher extends Model
         'codigo',
         'fecha',
         'estado',
-        'ventas_id',
+        'pedido_id',
     ];
 
-    public function venta()
+    public function pedido()
     {
-        return $this->belongsTo(Venta::class, 'ventas_id');
+        return $this->belongsTo(Pedido::class, 'pedido_id');
     }
 }

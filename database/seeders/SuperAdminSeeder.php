@@ -36,18 +36,18 @@ class SuperAdminSeeder extends Seeder
         $permisoBarista = Permission::firstOrCreate(['name' => 'Acciones-barista']);
         $permisoCajero = Permission::firstOrCreate(['name' => 'Acciones-cajero']);
         $permisoCliente = Permission::firstOrCreate(['name' => 'Acciones-cliente']);
+        $permisoMesero = Permission::firstOrCreate(['name' => 'Acciones-mesero']);
 
-        // Crear el usuario Barista
-        $usuarioBarista = User::create([
-            'name' => 'Barista',
-            'email' => 'barista@gmail.com',
+        // Crear el usuario Mesero
+        $usuarioMesero = User::create([
+            'name' => 'Mesero',
+            'email' => 'mesero@gmail.com',
             'password' => bcrypt('12345678'),
         ]);
 
-        $rolBarista = Role::firstOrCreate(['name' => 'Barista']);
-        $rolBarista->givePermissionTo($permisoBarista);
-
-        $usuarioBarista->assignRole($rolBarista->id);
+        $rolMesero = Role::firstOrCreate(['name' => 'Mesero']);
+        $rolMesero->givePermissionTo($permisoMesero);
+        $usuarioMesero->assignRole($rolMesero->id);
 
         // Crear el usuario Cajero
         $usuarioCajero = User::create([

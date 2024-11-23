@@ -85,14 +85,15 @@
                                     @foreach (Cart::content() as $item)
                                         <tr>
                                             <td>
-                                                <img src="{{ $item->options->imagen }}" alt="{{ $item->name }}"
-                                                    style="width: 100px;">
+                                                <img src="{{ $item->options->imagen }}" alt="{{ $item->name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px;">
                                             </td>
+
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->options->descripcion }}</td>
                                             <td>{{ $item->qty }}</td>
                                             <td>S/. {{ number_format($item->price, 2) }}</td>
                                             <td>S/. {{ number_format($item->qty * $item->price, 2) }}</td>
+
                                             <td>
                                                 <form action="{{ route('removeitem') }}" method="POST">
                                                     @csrf

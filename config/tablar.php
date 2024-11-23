@@ -42,7 +42,7 @@ return [
     'auth_logo' => [
         'enabled' => true,
         'img' => [
-            'path' => 'assets/logo.jpg',
+            'path' => 'icon2.png',
             'class' => '',
             'width' => 50,
             'height' => 50,
@@ -146,52 +146,66 @@ return [
     */
 
     'menu' => [
+        [
+            'text' => 'Dashboard',
+            'icon' => 'ti ti-dashboard',
+            'url' => '/inicio',
+            'can' => 'ver-rol',
+        ],
         // Navbar items:
         [
             'text' => 'Principal',
             'icon' => 'ti ti-home',
-            'url' => '/principal',
+            'url' => '/',
             'can' => 'Acciones-cliente',
         ],
         [
             'text' => 'Menú',
-            'icon' => 'ti ti-menu',
+            'icon' => 'ti ti-ticket',
             'url' => '/catalogos'
         ],
         [
-            'text' => 'Inicio',
-            'icon' => 'ti ti-home',
-            'url' => '/inicio',
-            'can' => 'ver-rol',
-        ],
-
-        [
-            'text' => 'Clientes',
-            'icon' => 'ti ti-user',
-            'url' => '/clientes',
-            'can' => 'ver-rol'
-        ],
-
-        [
-            'text' => 'Delivery',
-            'icon' => 'ti ti-car',
-            'url' => '/delivery',
-            'can' => 'ver-rol'
-        ],
-
-        [
-            'text' => 'Ventas',
-            'icon' => 'ti ti-cash',
-            'url' => '/ventas',
-            'can' => ['Acciones-cajero']
-        ],
-        [
-            'text' => 'Pedidos',
+            'text' => 'Gestion venta',
             'icon' => 'ti ti-receipt',
-            'url' => '/pedidos',
-            'can' => ['Acciones-barista','Acciones-cajero']
+            'can' => 'ver-rol',
+            'submenu' => [
+                [
+                'text' => 'Pedidos',
+                'icon' => 'ti ti-receipt',
+                'url' => '/pedidos',
+                'can' => ['Acciones-barista', 'Acciones-cajero']
+                ],
+                [
+                    'text' => 'Voucher',
+                    'icon' => 'ti ti-receipt',
+                    'url' => '/vouchers',
+                    'can' => ['ver-rol', 'Acciones-cajero']
+
+                ],
+            ],
         ],
 
+        [
+            'text' => 'Gestion restaurante',
+            'icon' => 'ti ti-receipt',
+            'can' => 'Acciones-mesero',
+            //'active' => ['support1'],
+            'submenu' => [
+                [
+                    'text' => 'Salas',
+                    'icon' => 'ti ti-menu',
+                    'url' => '/salas',
+                    'can' => 'Acciones-mesero',
+                ],
+                [
+                    'text' => 'Historial Mesas',
+                    'icon' => 'ti ti-archive',
+                    'url' => '/mesas',
+                    'can' => 'Acciones-mesero',
+                ],
+            ],
+
+        ],
 
         [
             'text' => 'Acciones Admin',
@@ -200,11 +214,6 @@ return [
             'can' => 'ver-rol',
             //'active' => ['support1'],
             'submenu' => [
-                [
-                    'text' => 'Usuarios',
-                    'icon' => 'ti ti-user',
-                    'url' => '/usuarios'
-                ],
                 [
                     'text' => 'Roles',
                     'icon' => 'ti ti-user',
@@ -217,22 +226,54 @@ return [
                     'can' => 'ver-rol',
                 ],
                 [
-                    'text' => 'Productos',
+                    'text' => 'SubCategorias',
+                    'icon' => 'ti ti-star',
+                    'url' => '/subcategorias',
+                    'can' => 'ver-rol',
+                ],
+                [
+                    'text' => 'Platillos',
                     'icon' => 'ti ti-shopping-cart',
-                    'url' => '/productos',
+                    'url' => '/platillos',
+                    'can' => 'ver-rol',
+                ],
+            ],
+
+        ],
+        [
+            'text' => 'Usuarios',
+            'url' => '//products',
+            'icon' => 'ti ti-user',
+            'can' => 'ver-rol',
+            //'active' => ['support1'],
+            'submenu' => [
+                [
+                    'text' => 'Usuarios generales',
+                    'icon' => 'ti ti-user',
+                    'url' => '/usuarios'
+                ],
+                [
+                    'text' => 'Personal',
+                    'icon' => 'ti ti-user',
+                    'url' => '/personal'
+                ],
+                [
+                    'text' => 'Clientes',
+                    'icon' => 'ti ti-star',
+                    'url' => '/cliente',
+                    'can' => 'ver-rol',
+                ],
+                [
+                    'text' => 'Repartidores',
+                    'icon' => 'ti ti-user',
+                    'url' => '/repartidor',
                     'can' => 'ver-rol',
                 ],
             ],
 
         ],
 
-        [
-            'text' => 'Voucher',
-            'icon' => 'ti ti-receipt',
-            'url' => '/vouchers',
-            'can' => ['ver-rol','Acciones-cajero']
 
-        ],
 
 
 

@@ -16,11 +16,14 @@ class CategoriaSeeder extends Seeder
     {
         // Array de categorías para insertar
         $categorias = [
-            ['nombre' => 'Cafés', 'descripcion' => 'Bebidas de café de diferentes tipos'],
-            ['nombre' => 'Tés', 'descripcion' => 'Variedad de tés e infusiones'],
-            ['nombre' => 'Pasteles', 'descripcion' => 'Pasteles y tartas frescas'],
-            ['nombre' => 'Sándwiches', 'descripcion' => 'Sándwiches y bocadillos variados'],
-            ['nombre' => 'Jugos', 'descripcion' => 'Jugos naturales y batidos'],
+            ['nombre' => 'Desayuno',
+            'estado' => true],
+            ['nombre' => 'Almuerzo',
+            'estado' => true],
+            ['nombre' => 'Cena',
+            'estado' => true],
+            ['nombre' => 'Bebidas',
+            'estado' => true],
         ];
 
         // Insertar cada categoría en la base de datos

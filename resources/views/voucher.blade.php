@@ -10,7 +10,7 @@
         }
         .container {
             width: 50%;
-            max-width: 500px; /* Ajustar el ancho del voucher */
+            max-width: 500px;
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #00362f;
@@ -62,15 +62,16 @@
             <p>Tel: (555) 555-5555</p>
         </div>
 
-        <!-- Cuello -->
+        <!-- Detalles del Pedido -->
         <div class="details">
             <p><strong>Fecha:</strong> {{ date('d/m/Y H:i') }}</p>
-            <p><strong>Cliente:</strong> {{ $venta->cliente_nombre }}</p>
-            <p><strong>Pedido #:</strong> {{ $venta->id }}</p>
-            <p><strong>Codigo:</strong> {{ $voucher->codigo}}</p>
+            <p><strong>Cliente:</strong> {{ $pedido->nombre }}</p>
+            <p><strong>Pedido #:</strong> {{ $pedido->id }}</p>
+            <p><strong>Dirección:</strong> {{ $pedido->direccion }}</p>
+            <p><strong>Código del Voucher:</strong> {{ $voucher->codigo }}</p>
         </div>
 
-        <!-- Cuerpo -->
+        <!-- Tabla de Detalles -->
         <table class="table">
             <thead>
                 <tr>
@@ -78,28 +79,24 @@
                     <th>Cant.</th>
                     <th>P. Unit.</th>
                     <th>Subtotal</th>
-                    <th>IGV</th>
-                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($cartItems as $item)
+                @foreach ($pedido->detalles as $detalle)
                     <tr>
-                        <td>{{ $item['name'] }}</td>
-                        <td>{{ $item['qty'] }}</td>
-                        <td>S/. {{ number_format($item['price'], 2) }}</td>
-                        <td>S/. {{ number_format($item['price'] * $item['qty'], 2) }}</td>
-                        <td>S/. {{ number_format($item['price'] * $item['qty'] * 0.18, 2) }}</td>
-                        <td>S/. {{ number_format($item['price'] * $item['qty'] * 1.18, 2) }}</td>
+                        <td>{{ $detalle->platillo->nombre }}</td>
+                        <td>{{ $detalle->cantidad }}</td>
+                        <td>S/. {{ number_format($detalle->platillo->precio, 2) }}</td>
+                        <td>S/. {{ number_format($detalle->cantidad * $detalle->platillo->precio, 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <!-- Total y Final -->
+        <!-- Totales -->
         <div class="total">
             <p><strong>Subtotal:</strong> S/. {{ number_format($subtotal, 2) }}</p>
-            <p><strong>IGV (18%):</strong> S/. {{ number_format($igv, 2) }}</p>
+            <p><strong>IGV (18%):</strong> S/. {{ number_format($subtotal * 0.18, 2) }}</p>
             <p><strong>Total con IGV:</strong> S/. {{ number_format($total, 2) }}</p>
         </div>
 

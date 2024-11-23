@@ -9,10 +9,10 @@ class Categoria extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'descripcion'];
+    protected $fillable = ['nombre','estado'];
 
-    public function productos()
+    public function platillos()
     {
-        return $this->hasMany(Producto::class);
+        return $this->hasMany(Platillo::class);
     }
 }

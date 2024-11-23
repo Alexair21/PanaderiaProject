@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catalogo;
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Platillo;
 use Illuminate\Http\Request;
 
 class CatalogoController extends Controller
@@ -15,8 +16,8 @@ class CatalogoController extends Controller
     public function index()
     {
         $categorias = Categoria::all();
-        $productos = Producto::all();
-        return view('catalogos.index', compact('categorias', 'productos'));
+        $platillos = Platillo::all();
+        return view('catalogos.index', compact('categorias', 'platillos'));
     }
 
     /**
@@ -34,15 +35,6 @@ class CatalogoController extends Controller
     {
         //
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Producto $producto)
-    {
-        return view('catalogos.show', compact('producto'));
-    }
-
 
     /**
      * Show the form for editing the specified resource.

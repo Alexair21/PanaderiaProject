@@ -9,33 +9,29 @@ class Pedido extends Model
 {
     use HasFactory;
 
-    protected $table = 'pedidos';
-
     protected $fillable = [
-        'cantidad',
-        'precio_unitario',
-        'total',
-        'producto_id',
-        'venta_id',
+        'user_id',
+        'nombre',
+        'estado',
+        'direccion',
+        'MetodoPago',
+        'FechaPedido',
+        'TipoPedido',
     ];
 
-    public $timestamps = false;
-
-    public function productos()
+    public function user()
     {
-        return $this->belongsTo(Producto::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-
-
-    public function ventas()
+    public function detalles()
     {
-        return $this->belongsTo(Venta::class);
+        return $this->hasMany(DetallePedido::class, 'pedido_id');
     }
 
-    public function producto()
+    public function index()
     {
-        return $this->belongsTo(Producto::class, 'producto_id');
+        $vouchers = Voucher::with('pedido')->get();
+        return view('vouchers.index', compact('vouchers'));
     }
-
 }

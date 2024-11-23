@@ -18,10 +18,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CategoriaSeeder::class);
 
-        $this->call(ProductoSeeder::class);
-
-        $this->call(PrecioSeeder::class);
+        $this->call(SubCategoriaSeeder::class);
 
         $this->call(ClienteSeeder::class);
+
+        $this->call(PlatilloSeeder::class);
+
+        $this->call(PersonalSeeder::class);
     }
 }

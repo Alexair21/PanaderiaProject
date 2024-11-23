@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Producto;
+use App\Models\Platillo;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Models\Venta;
@@ -15,30 +15,41 @@ class CartController extends Controller
 {
     public function add(Request $request)
     {
-        $producto = Producto::find($request->id);
-        $precioSeleccionado = $request->input('precio_seleccionado');
-        $precio = $precioSeleccionado === 'base' ? $producto->precio : $producto->precios()->where('id', $precioSeleccionado)->first()->precio;
+        // Buscar el platillo por su ID
+        $platillo = Platillo::find($request->id);
+        if (!$platillo) {
+            return redirect()->back()->with('error', 'Platillo no encontrado.');
+        }
+
+        // Obtener la cantidad y precio
         $cantidad = $request->input('quantity', 1);
+        $precio = $platillo->precio;
 
-        // Obtener la descripción
-        $tamaño = $precioSeleccionado === 'base' ? 'Base' : $producto->precios()->where('id', $precioSeleccionado)->first()->nombre;
-        $crema = $request->input('cream', 'No');
-        $jarabes = $request->input('extras', []);
-        $descripcion = "Tamaño: $tamaño, Crema: $crema, Jarabes: " . implode(', ', $jarabes);
+        // Obtener las observaciones del usuario
+        $observaciones = $request->input('observaciones', '');
 
+        // Descripción (concatenamos la descripción del platillo con las observaciones, si existen)
+        $descripcion = $platillo->descripcion;
+        if (!empty($observaciones)) {
+            $descripcion .= ' - Observaciones: ' . $observaciones;
+        }
+
+        // Agregar al carrito
         Cart::add(
-            $producto->id,
-            $producto->nombre,
+            $platillo->id,
+            $platillo->nombre,
             $cantidad,
             $precio,
             [
-                'imagen' => $producto->imagen,
-                'descripcion' => $descripcion
+                'imagen' => asset($platillo->imagen), // Usar asset() para generar la ruta correcta de la imagen
+                'descripcion' => $descripcion,
             ]
         );
 
-        return redirect()->back()->with('success', 'Producto agregado al carrito: ' . $producto->nombre);
+        return redirect()->back()->with('success', 'Platillo agregado al carrito: ' . $platillo->nombre);
     }
+
+
 
     public function checkout()
     {

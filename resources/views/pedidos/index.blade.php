@@ -24,30 +24,39 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-deck row-cards">
-                @php
-                    $pedidosPorVenta = $pedidos->groupBy('venta_id');
-                @endphp
-
-                @foreach ($pedidosPorVenta as $venta_id => $pedidosVenta)
+                @foreach ($pedidos as $pedido)
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Código Venta: {{ $venta_id }}</h3>
+                                <h3 class="card-title">Pedido #{{ $pedido->id }}</h3>
                             </div>
                             <div class="card-body">
                                 <ul class="list-unstyled">
-                                    @foreach ($pedidosVenta as $pedido)
+                                    <li><strong>Cliente:</strong> {{ $pedido->nombre }}</li>
+                                    <li><strong>Tipo de Pedido:</strong> {{ $pedido->TipoPedido }}</li>
+                                    <li><strong>Dirección:</strong> {{ $pedido->direccion }}</li>
+                                    <li><strong>Método de Pago:</strong> {{ $pedido->MetodoPago }}</li>
+                                    <li><strong>Fecha:</strong>
+                                        {{ \Carbon\Carbon::parse($pedido->FechaPedido)->format('d/m/Y H:i') }}</li>
+                                </ul>
+                                <hr>
+                                <h5>Detalles:</h5>
+                                <ul class="list-unstyled">
+                                    @foreach ($pedido->detalles as $detalle)
                                         <li>
-                                            <strong>{{ $pedido->producto->nombre }}</strong>
-                                            <span class="float-right">Cantidad: {{ $pedido->cantidad }}</span>
+                                            <strong>{{ $detalle->platillo->nombre ?? 'Platillo no encontrado' }}</strong>
+                                            <span class="float-right">Cantidad: {{ $detalle->cantidad }}</span>
+                                            <br>
+                                            <small>Precio: S/. {{ number_format($detalle->total, 2) }}</small>
                                         </li>
                                     @endforeach
                                 </ul>
+
                             </div>
                             <div class="card-footer">
                                 {!! Form::open([
                                     'method' => 'DELETE',
-                                    'route' => ['pedidos.destroy', $pedidosVenta->first()->id],
+                                    'route' => ['pedidos.destroy', $pedido->id],
                                     'style' => 'display:inline',
                                 ]) !!}
                                 {!! Form::submit('Eliminar', ['class' => 'btn btn-sm btn-danger']) !!}

@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->integer('cantidad');
-            $table->decimal('precio_unitario', 8, 2);
-            $table->decimal('total', 8, 2);
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('nombre');
+            $table->string('estado')->default('pendiente');
+            $table->string('direccion')->nullable();
+            $table->string('MetodoPago');
+            $table->string('FechaPedido');
+            $table->string('TipoPedido');
 
-            //claves foraneas
-            $table->bigInteger('producto_id')->unsigned();
-            $table->foreign('producto_id')->references('id')->on('productos');
-            $table->bigInteger('venta_id')->unsigned();
-            $table->foreign('venta_id')->references('id')->on('ventas')->onDelete('cascade');
+            // Nueva columna para asociar pedidos a mesas
+            $table->foreignId('mesa_id')->nullable()->constrained('mesas')->onDelete('set null');
+
             $table->timestamps();
         });
     }

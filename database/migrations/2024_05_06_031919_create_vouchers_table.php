@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('codigo');
             $table->date('fecha');
             $table->string('estado');
-            $table->unsignedBigInteger('ventas_id');
-            $table->foreign('ventas_id')->references('id')->on('ventas')->onDelete('cascade');
+            $table->unsignedBigInteger('pedido_id');
+            $table->foreign('pedido_id')->references('id')->on('pedidos')->onDelete('cascade');
             $table->timestamps();
         });
     }

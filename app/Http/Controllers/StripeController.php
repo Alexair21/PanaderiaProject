@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pedido;
+use App\Models\DetallePedido;
+use App\Models\Voucher;
+use App\Models\Personal;
+use App\Models\AsignacionPedido;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
-use Stripe\Checkout\Session;
-use App\Models\Venta;
-use App\Models\Pedido;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Str;
-use App\Models\Voucher;
 
 class StripeController extends Controller
 {
@@ -17,18 +16,80 @@ class StripeController extends Controller
     {
         \Stripe\Stripe::setApiKey(config('stripe.sk'));
 
-        $total = $request->input('total'); // Recibe el total en céntimos
-        $description = json_decode($request->input('description'), true);
-        $estadoVariable = $request->input('estadoVariable'); // Obtener la variable del input oculto
-        $customerName = $request->input('customerNameHidden') ?? $request->input('customerNameHiddenCard'); // Obtener el nombre del cliente
-        $ventaId = $request->input('venta_id'); // Obtener el ID de la venta
+        // Recibir datos de la solicitud
+        $total = $request->input('total'); // Total en céntimos
+        $description = json_decode($request->input('description'), true); // Items del carrito
+        $deliveryOption = $request->input('estadoVariable'); // 'sendHome' o 'pickupStore'
+        $direccion = $request->input('address') ?? 'Recojo en tienda'; // Dirección de entrega o "Recojo en tienda"
+        $metodoPago = $request->input('MetodoPago') ?? 'Tarjeta'; // Método de pago
+        $tipoPedido = $deliveryOption === 'sendHome' ? 'Delivery' : 'Recojo en tienda'; // Tipo de pedido
 
-        // Almacenar el estado, el nombre del cliente y el ID de la venta en la sesión
-        $request->session()->put('estadoVariable', $estadoVariable);
-        $request->session()->put('customerName', $customerName);
-        $request->session()->put('venta_id', $ventaId);
 
-        // Crear un ítem de línea para el total con IGV
+        // Validar el nombre del cliente
+        $customerName = $request->input('customerName') ?? (auth()->check() ? auth()->user()->name : null);
+
+        // Validar si el nombre es null
+        if (!$customerName) {
+            return redirect()->back()->with('error', 'El nombre del cliente no puede estar vacío.');
+        }
+
+        $userId = auth()->user()->id; // Usuario autenticado
+        $fechaPedido = now(); // Fecha y hora actual
+
+        // Crear un registro de Pedido
+        $pedido = new Pedido();
+        $pedido->user_id = $userId;
+        $pedido->nombre = $customerName;
+        $pedido->estado = 'Pendiente'; // Estado inicial
+        $pedido->direccion = $direccion;
+        $pedido->MetodoPago = $metodoPago;
+        $pedido->FechaPedido = $fechaPedido;
+        $pedido->TipoPedido = $tipoPedido;
+        $pedido->save();
+
+        // Crear los detalles del pedido
+        foreach ($description as $item) {
+            $detallePedido = new DetallePedido();
+            $detallePedido->pedido_id = $pedido->id; // ID del pedido
+            $detallePedido->platillo_id = $item['id']; // ID del platillo o producto
+            $detallePedido->cantidad = $item['qty']; // Cantidad
+            $detallePedido->total = $item['qty'] * $item['price']; // Total por ítem
+            $detallePedido->save();
+        }
+
+        // Si la opción es "sendHome" (Envío a casa), asignar un repartidor disponible
+        if ($deliveryOption === 'delivery') {
+            $repartidor = Personal::where('cargo', 'Repartidor')
+                ->where('estado', 'Disponible')
+                ->first();
+
+            if (!$repartidor) {
+                return redirect()->back()->with('error', 'No hay repartidores disponibles en este momento.');
+            }
+
+            // Asignar el pedido al repartidor
+            $asignacion = new AsignacionPedido();
+            $asignacion->pedido_id = $pedido->id;
+            $asignacion->personal_id = $repartidor->id;
+            $asignacion->estado = 'Asignado';
+            $asignacion->fecha_asignacion = now();
+            $asignacion->direccion = $direccion;
+            $asignacion->save();
+
+            // Actualizar el estado del repartidor a "Ocupado"
+            $repartidor->estado = 'Ocupado';
+            $repartidor->save();
+        }
+
+        // Crear el voucher para el pedido
+        $voucher = new Voucher();
+        $voucher->codigo = 'VOU-' . str_pad($pedido->id, 6, '0', STR_PAD_LEFT); // Código único del voucher
+        $voucher->fecha = $fechaPedido->format('Y-m-d'); // Fecha del pedido
+        $voucher->estado = 'Pagado'; // Estado del voucher
+        $voucher->pedido_id = $pedido->id; // Asociar al pedido
+        $voucher->save();
+
+        // Crear un ítem de línea para Stripe con el total
         $lineItems = [
             [
                 'price_data' => [
@@ -42,11 +103,12 @@ class StripeController extends Controller
             ]
         ];
 
+        // Crear la sesión de Stripe
         $session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => route('summary', ['total' => $total, 'description' => $request->input('description')]),
+            'success_url' => route('summary', ['pedido_id' => $pedido->id]),
             'cancel_url' => route('checkout'),
         ]);
 
@@ -55,104 +117,33 @@ class StripeController extends Controller
 
     public function summary(Request $request)
     {
-        $total = $request->input('total') / 100; // Convertir de céntimos a soles
-        $cartItems = json_decode($request->input('description'), true);
+        $pedidoId = $request->input('pedido_id');
+        $pedido = Pedido::with(['detalles'])->findOrFail($pedidoId); // Cargar pedido con detalles
 
-        // Recuperar el valor de estadoVariable, el nombre del cliente y el ID de la venta desde la sesión
-        $estadoVariable = $request->session()->get('estadoVariable');
-        $customerName = $request->session()->get('customerName');
-        $ventaId = $request->session()->get('venta_id');
+        // Verificar si el pedido necesita asignar un repartidor
+        if ($pedido->TipoPedido === 'Envío a casa' && !$pedido->asignacion) {
+            $repartidor = Personal::where('cargo', 'Repartidor')
+                ->where('estado', 'Disponible')
+                ->first();
 
-        // Determinar el estado basado en la variable
-        switch ($estadoVariable) {
-            case '1':
-                $estado = 'Delivery';
-                break;
-            case '2':
-                $estado = 'Pago normal-Efectivo';
-                break;
-            case '3':
-                $estado = 'Pago normal-Tarjeta';
-                break;
-            default:
-                $estado = 'Desconocido';
-                break;
-        }
+            if ($repartidor) {
+                $asignacion = new AsignacionPedido();
+                $asignacion->pedido_id = $pedido->id;
+                $asignacion->personal_id = $repartidor->id;
+                $asignacion->estado = 'Asignado';
+                $asignacion->fecha_asignacion = now();
+                $asignacion->direccion = $pedido->direccion;
+                $asignacion->save();
 
-        // Asegurarse de que el usuario está autenticado
-        if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar la compra.');
-        }
-
-        // Obtener el id del usuario que está logueado
-        $cliente_id = auth()->user()->id;
-
-        // Obtener la fecha actual
-        $fecha = now(); // Esto obtiene la fecha y hora actual en formato Carbon
-
-        // Buscar una venta existente por ID o crear una nueva
-        $venta = Venta::find($ventaId);
-
-        if ($venta) {
-            // Si se encuentra una venta existente, actualizar el estado y total
-            $venta->estado = 'Pagado';
-            $venta->total = $total;
-            $venta->save();
-        } else {
-            // Si no se encuentra, crear una nueva venta
-            $venta = new Venta();
-            $venta->cliente_nombre = $customerName;
-            $venta->fecha_venta = $fecha; // Cambiado de 'fecha' a 'fecha_venta' para mayor claridad
-            $venta->estado = 'Pagado';
-            $venta->total = $total;
-            $venta->save();
-
-            // Guardar datos en la tabla pedidos
-            foreach ($cartItems as $item) {
-                if (isset($item['qty']) && isset($item['price']) && isset($item['id'])) {
-                    // Obtener los datos necesarios
-                    $cantidad = $item['qty'];
-                    $precio_unitario = $item['price'];
-                    $total_item = $item['qty'] * $item['price'];
-                    $producto_id = $item['id'];
-                    $venta_id = $venta->id;
-
-                    // Insertar en la tabla pedidos
-                    $pedido = new Pedido();
-                    $pedido->cantidad = $cantidad;
-                    $pedido->precio_unitario = $precio_unitario;
-                    $pedido->total = $total_item;
-                    $pedido->producto_id = $producto_id;
-                    $pedido->venta_id = $venta_id;
-                    $pedido->save();
-                } else {
-                    // Manejar el caso donde los datos no están completos
-                    return redirect()->route('cart.index')->with('error', 'Datos del carrito incompletos.');
-                }
+                $repartidor->estado = 'Ocupado';
+                $repartidor->save();
             }
         }
 
-
-
-        // Insertar en la tabla vouchers
-        $voucher = new Voucher();
-        $voucher->codigo = '0000' . $venta->id;
-        $voucher->fecha = $fecha;
-        $voucher->estado = $estado;
-        $voucher->ventas_id = $venta->id;
-        $voucher->save();
-
-        // Limpiar el carrito
-        Cart::destroy();
-
-        // Obtener los pedidos de la venta
-        $ventaItems = Pedido::where('venta_id', $venta->id)->get();
-
-        // Pasar los datos necesarios a la vista
         return view('purchase_summary', [
-            'venta' => $venta,
-            'ventaItems' => $ventaItems,
-            'voucher' => $voucher
+            'pedido' => $pedido,
+            'detallePedidos' => DetallePedido::where('pedido_id', $pedido->id)->get(),
+            'voucher' => Voucher::where('pedido_id', $pedido->id)->first(),
         ]);
     }
 }

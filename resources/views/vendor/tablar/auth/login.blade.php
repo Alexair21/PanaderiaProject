@@ -2,48 +2,63 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="container container-tight py-4"
-        style="background-image: url('/path/to/your/cafe-background.jpg'); background-size: cover; background-position: center; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
-        <div class="card card-md shadow-lg"
-            style="background: rgba(255, 255, 255, 0.9); border-radius: 15px; max-width: 500px; padding: 40px;">
-            <div class="text-center mb-4">
-                <a href="" class="navbar-brand navbar-brand-autodark">
-                    <img src="{{ asset(config('tablar.auth_logo.img.path', 'assets/logo.svg')) }}" height="36"
-                        alt="">
-                </a>
-            </div>
-            <h2 class="h2 text-center mb-4">Inicie sesión en su cuenta</h2>
-            <form action="{{ route('login') }}" method="post" autocomplete="off" novalidate>
-                @csrf
-                <div class="mb-3">
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                        placeholder="Ingrese su correo" autocomplete="off">
-                    @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-2">
-                    <div class="input-group input-group-flat">
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                            placeholder="Ingrese su contraseña" autocomplete="off">
-                        <span class="input-group-text">
-                            <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
-                            </a>
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url('/path/to/your/cafe-background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2;">
+    </div>
+
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); z-index: -1;">
+    </div>
+
+    <div class="container-xxl"
+        style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+        <div class="card px-sm-6 px-0" style="border: none; background-color: rgba(0, 0, 0, 0.5);">
+            <div class="card-body">
+                <!-- Logo -->
+                <div class="app-brand justify-content-center">
+                    <a href="{{ url('/') }}" class="app-brand-link gap-2">
+                        <span class="app-brand-logo demo">
+                            <center><img src="{{ asset('icon.png') }}" alt="Logo" height="80"></center>
                         </span>
+                    </a>
+                </div>
+                <!-- /Logo -->
+                <h4 class="mb-1 text-center" style="color: #ffffff;">Bienvenido! 👋</h4>
+                <p class="mb-4 text-center" style="color: #ffffff;">Por favor inicia sesión para ingresar</p>
+
+                <form action="{{ route('login') }}" method="post" autocomplete="off" novalidate>
+                    @csrf
+                    <div class="mb-4">
+                        <label for="email" class="form-label" style="color: #ffffff;">Email</label>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                            placeholder="Ingrese su correo" autocomplete="off" style="color:rgb(0, 0, 0)" required>
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-4 form-password-toggle">
+                        <label class="form-label" for="password" style="color: #ffffff;">Contraseña</label>
+                        <div class="input-group input-group-merge">
+                            <input type="password" name="password"
+                                class="form-control @error('password') is-invalid @enderror"
+                                placeholder="Ingrese su contraseña" autocomplete="off" style="color:rgb(0, 0, 0)" required>
+                        </div>
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
-                </div>
-            </form>
-            @if (Route::has('register'))
-                <div class="text-center text-muted mt-3">
-                    ¿Aún no tienes cuenta? <a href="{{ route('register') }}" tabindex="-1">Regístrate</a>
-                </div>
-            @endif
+                    <div class="mb-4">
+                        <button class="btn btn-primary d-grid w-100" type="submit"
+                            style="background-color: #E4C590; border-color: #ffff; color:black">Iniciar sesión</button>
+                    </div>
+                </form>
+
+                @if (Route::has('register'))
+                    <p class="text-center" style="color:white;">
+                        ¿Eres nuevo? <a href="{{ route('register') }}" style="color: #E4C590;">Regístrate en el sistema</a>
+                    </p>
+                @endif
+            </div>
         </div>
     </div>
 @endsection
@@ -51,24 +66,20 @@
 @section('css')
     <link rel="stylesheet" href="/css/principal.css">
     <style>
-        .card {
-            border-radius: 15px;
-        }
-
         .form-label {
-            color: #5b3a29;
-            /* Color acorde a una temática de cafetería */
+            color: #ffffff;
         }
 
         .btn-primary {
-            background-color: #6f4e37;
+            background-color: #E4C590;
             /* Color de botón acorde a una temática de cafetería */
-            border-color: #6f4e37;
+            border-color: #ffff;
+            color: black;
         }
 
         .btn-primary:hover {
-            background-color: #5b3a29;
-            border-color: #5b3a29;
+            background-color: #D0B18D;
+            border-color: #D0B18D;
         }
 
         .navbar-brand-autodark img {
@@ -76,7 +87,7 @@
         }
 
         .icon {
-            stroke: #6f4e37;
+            stroke: #E4C590;
             /* Color del icono acorde a una temática de cafetería */
         }
     </style>

@@ -1,6 +1,6 @@
 @extends('tablar::page')
 
-@section('title', 'Resumen compra')
+@section('title', 'Resumen de Compra')
 
 @section('content')
     <div class="container mt-5">
@@ -11,12 +11,12 @@
             <div class="card-body">
                 <center>
                     @can('Acciones-cliente')
-                        <div class="descripcion p-2 text-center p-2">
-                            <p><strong>Su pedido esta siendo enviado a: {{ Auth::user()->cliente->direccion }}</strong></p>
+                        <div class="descripcion p-2 text-center">
+                            <p><strong>Su pedido está siendo enviado a: {{ $pedido->direccion }}</strong></p>
                         </div><br>
                     @endcan
                     @can('Acciones-cajero')
-                        <div class="descripcion p-2 text-center p-2">
+                        <div class="descripcion p-2 text-center">
                             <p><strong>Su pedido está en proceso</strong></p>
                         </div><br>
                     @endcan
@@ -29,29 +29,29 @@
                             <th>Cantidad</th>
                             <th>Precio Unitario</th>
                             <th>SubTotal</th>
-                            <th>Igv</th>
+                            <th>IGV</th>
                             <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($ventaItems as $item)
+                        @foreach ($pedido->detalles as $detalle)
                             <tr>
                                 <td>
-                                    <img src="{{ $item->producto->imagen }}" alt="{{ $item->producto->nombre }}"
+                                    <img src="{{ $detalle->platillo->imagen }}" alt="{{ $detalle->platillo->nombre }}"
                                         style="width: 80px;">
                                 </td>
-                                <td>{{ $item->producto->nombre }}</td>
-                                <td>{{ $item->cantidad }}</td>
-                                <td>S/. {{ number_format($item->precio_unitario, 2) }}</td>
-                                <td>S/. {{ number_format($item->precio_unitario * $item->cantidad, 2) }}</td>
-                                <td>S/. {{ number_format($item->precio_unitario * $item->cantidad * 0.18, 2) }}</td>
-                                <td>S/. {{ number_format($item->precio_unitario * $item->cantidad * 1.18, 2) }}</td>
+                                <td>{{ $detalle->platillo->nombre }}</td>
+                                <td>{{ $detalle->cantidad }}</td>
+                                <td>S/. {{ number_format($detalle->platillo->precio, 2) }}</td>
+                                <td>S/. {{ number_format($detalle->platillo->precio * $detalle->cantidad, 2) }}</td>
+                                <td>S/. {{ number_format($detalle->platillo->precio * $detalle->cantidad * 0.18, 2) }}</td>
+                                <td>S/. {{ number_format($detalle->platillo->precio * $detalle->cantidad * 1.18, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <div class="text-end">
-                    <p><strong>Total:</strong> S/. {{ number_format($venta->total, 2) }}</p>
+                    <p><strong>Total:</strong> S/. {{ number_format($pedido->detalles->sum(fn($detalle) => $detalle->platillo->precio * $detalle->cantidad * 1.18), 2) }}</p>
                 </div>
                 <div class="mt-3">
                     <a href="{{ route('vouchers.generate', $voucher->id) }}" class="btn btn-primary">Imprimir Voucher</a>
